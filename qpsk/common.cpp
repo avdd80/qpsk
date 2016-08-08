@@ -39,28 +39,58 @@ int log_2 (int x)
 /*----------------------------------------------------------------*/
 /* FUNCTION: pack_to_word                                         */
 /*----------------------------------------------------------------*/
-/* Description: Packs n bits into a single word such that the first
-                is placed at the most significant position of the 
-                n bits
+/* Description: Packs n bits into a string of bytes
  
  Arguments: 1. Pointer to bit stream
-            2. n (number of bits to pack in one word)
-            3. Pointer to packed word
+            2. Pointer to string
+            3. Total number of bits
  
  Returns:   None
  
  ------------------------------------------------------------------*/
-void pack_to_word (bool* data_b, uint* packed_word, int bits_per_word)
+void pack_to_bytes (bool* data_b, char* packed_string, int num_of_bits)
+{
+    uint i = 0;
+    
+    while (num_of_bits > 0)
+    {
+        *(packed_string + i) = pack_byte(data_b);
+
+        data_b += 8;
+        num_of_bits -= 8;
+        i++;
+    }
+
+    return;
+} /* pack_to_bytes */
+
+
+
+/*----------------------------------------------------------------*/
+/* FUNCTION: pack_byte                                            */
+/*----------------------------------------------------------------*/
+/* Description: Packs 8 bits into a single byte such that the first
+                is placed at the most significant position of the
+                byte
+ 
+ Arguments: 1. Pointer to bit stream
+ 
+ Returns:   Packed byte
+ 
+ ------------------------------------------------------------------*/
+char pack_byte (bool* data_b)
 {
     uint i;
-    *packed_word = 0;
-    for (i = 0; i < bits_per_word; i++)
+    char packed_byte = 0;
+    for (i = 0; i < 8; i++)
     {
-        *packed_word <<= 1;
-        *packed_word |= *(data_b + i);
+        packed_byte <<= 1;
+        packed_byte |= *(data_b + i);
+        //printf ("%d\n", *(data_b + i));
     }
-    return;
-} /* pack_to_word */
+//    printf("%c\n", packed_byte);
+    return packed_byte;
+} /* pack_byte */
 
 
 /*----------------------------------------------------------------*/
@@ -75,14 +105,73 @@ void pack_to_word (bool* data_b, uint* packed_word, int bits_per_word)
  Returns:   None
 
  ------------------------------------------------------------------*/
-void unpack_to_bits (uint* packed_word, bool* data_b, int bits_per_word)
+void unpack_to_bits (char* packed_word, bool* data_b, int bits_per_word)
+{
+    uint i, num_bits;
+
+    while (bits_per_word > 0)
+    {
+        
+        if (bits_per_word >= 8)
+        {
+            num_bits = 8;
+        }
+        else
+        {
+            num_bits = bits_per_word % 8;
+        }
+        
+        unpack_byte (*(packed_word + i), data_b, num_bits);
+        
+        i++;
+        data_b += 8;
+        bits_per_word -= 8;
+    }
+
+    return;
+} /* unpack_to_bits */
+
+/*----------------------------------------------------------------*/
+/* FUNCTION: unpack_byte                                          */
+/*----------------------------------------------------------------*/
+/* Description: Unpack the byte into n bits.
+
+   Arguments:   1. Byte to unpack
+                2. Pointer to bit stream
+                3. n (Number of bits per word
+
+   Returns:     None
+ ------------------------------------------------------------------*/
+void unpack_byte (char packed_word, bool* data_b, int num_bits)
 {
     uint i;
-    for (i = 0; i < bits_per_word; i++)
+    for (i = 0; i < num_bits; i++)
     {
         /* MSB is mapped to the first bit out data_b[0] */
-        *(data_b + i) = (*packed_word >> (bits_per_word - i - 1)) & 0x01;
+        *(data_b + i) = (packed_word >> (num_bits - i - 1)) & 0x01;
         
     }
     return;
-} /* unpack_to_bits */
+} /* unpack_byte */
+
+
+/*----------------------------------------------------------------*/
+/* FUNCTION: float_to_int                                         */
+/*----------------------------------------------------------------*/
+/* Description: Typecast float stream to int
+ 
+ Arguments:     1. Pointer to int stream
+                2. Pointer to float stream
+                3. Length of stream
+ 
+ Returns:     None
+ ------------------------------------------------------------------*/
+void float_to_int (int* int_stream, float* float_stream, int num_of_samples)
+{
+    int i;
+    for (i = 0; i < num_of_samples; i++)
+    {
+        *(int_stream + i) = (int) *(float_stream + i);
+    }
+    return;
+} /* float_to_int */

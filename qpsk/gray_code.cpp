@@ -80,7 +80,7 @@ uint gray_code_lut[64] = {
 void map_gray (bool* data_b, bool* gray_data_b, uint length_b, uint modulation_order)
 {
     uint i;
-    uint packed_word;
+    char packed_word;
     uint mod_order_log;
     uint length_s = length_b/modulation_order;
     
@@ -89,13 +89,13 @@ void map_gray (bool* data_b, bool* gray_data_b, uint length_b, uint modulation_o
     for (i = 0; i < length_s; i++)
     {
         /* Pack bits to word */
-        pack_to_word (data_b + length_b * mod_order_log, &packed_word, mod_order_log);
+        pack_to_bytes (data_b + length_b * mod_order_log, &packed_word, mod_order_log);
         
         /* Pick out gray code from the LUT */
         packed_word = gray_code_lut[packed_word];
         
         /* Unpack gray coded word to bits */
-        unpack_to_bits (&packed_word, gray_data_b + i * mod_order_log, mod_order_log);
+        unpack_to_bits ((char*)&packed_word, gray_data_b + i * mod_order_log, mod_order_log);
     }
     
     return;

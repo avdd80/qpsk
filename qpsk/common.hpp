@@ -31,17 +31,30 @@ int log_2 (int x);
 #define antilog_2(n) (1<<n)
 
 
+
 /*----------------------------------------------------------------*/
 /* FUNCTION: pack_to_word                                         */
 /*----------------------------------------------------------------*/
-void pack_to_word (bool* data_b, uint* packed_word, int bits_per_word);
+void pack_to_bytes (bool* data_b, char* packed_string, int num_of_bits);
 
-
+/*----------------------------------------------------------------*/
+/* FUNCTION: pack_byte                                            */
+/*----------------------------------------------------------------*/
+char pack_byte (bool* data_b);
 
 /*----------------------------------------------------------------*/
 /* FUNCTION: unpack_to_bits                                       */
 /*----------------------------------------------------------------*/
-void unpack_to_bits (uint* packed_word, bool* data_b, int bits_per_word);
+void unpack_to_bits (char* packed_word, bool* data_b, int bits_per_word);
 
+/*----------------------------------------------------------------*/
+/* FUNCTION: unpack_byte                                          */
+/*----------------------------------------------------------------*/
+void unpack_byte (char packed_word, bool* data_b, int num_bits);
+
+/*----------------------------------------------------------------*/
+/* FUNCTION: float_to_int                                         */
+/*----------------------------------------------------------------*/
+void float_to_int (int* int_stream, float* float_stream, int num_of_samples);
 
 #endif /* common_h */

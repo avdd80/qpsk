@@ -12,11 +12,13 @@
 #include "types.hpp"
 #include "qpsk.hpp"
 
+#define NUMBER_OF_CHAR_DATA             32
+
 /* Number of data bits in the data stream */
-#define NUMBER_OF_DATA_BITS              32
+#define NUMBER_OF_DATA_BITS              NUMBER_OF_CHAR_DATA*8
 
 /* Amplitude of transmitted signal */
-#define QPSK_MOD_AMPLITUDE               1
+#define QPSK_MOD_AMPLITUDE               200
 
 /* 2 bits map to 1 QPSK symbol */
 #define QPSK_BITS_PER_SYMBOL             2

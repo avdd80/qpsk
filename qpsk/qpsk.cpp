@@ -275,6 +275,11 @@ void qpsk::mod_qpsk_bp_phase (bool*  data_b,
     uint   length_s = length_b / QPSK_BITS_PER_SYMBOL;
     float  phase[NUMBER_OF_SYMBOLS];
     
+    for (i = 0; i < NUMBER_OF_DATA_BITS; i++)
+    {
+        //printf ("%d\n", data_b[i]);
+    }
+    
     /* Generate baseband QPSK modulated signal */
     mod_qpsk_bb_phase (data_b, length_b, amplitude, phase);
     
@@ -417,6 +422,11 @@ void qpsk::demod_qpsk (float* sampled_bp_signal_c,
         /* Map detected phase to data bits */
         map_phase_to_bits (demod_phase, data_b + data_b_pointer);
         data_b_pointer += 2;
+    }
+    
+    for (i = 0; i < NUMBER_OF_DATA_BITS; i++)
+    {
+        //printf ("%d\n", data_b[i]);
     }
 
     return;
