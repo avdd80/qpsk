@@ -45,21 +45,21 @@ int log_2 (int x)
  
  Arguments: 1. Pointer to bit stream
             2. n (number of bits to pack in one word)
+            3. Pointer to packed word
  
- Returns:   Packed word
+ Returns:   None
  
  ------------------------------------------------------------------*/
-uint pack_to_word (bool* data_b, int bits_per_word)
+void pack_to_word (bool* data_b, uint* packed_word, int bits_per_word)
 {
     uint i;
-    uint packed_word = 0;
+    *packed_word = 0;
     for (i = 0; i < bits_per_word; i++)
     {
-        packed_word |= *(data_b + i);
-        packed_word <<= 1;
+        *packed_word <<= 1;
+        *packed_word |= *(data_b + i);
     }
-    printf ("Packed word = 0x%X\n", packed_word);
-    return packed_word;
+    return;
 } /* pack_to_word */
 
 
@@ -67,24 +67,22 @@ uint pack_to_word (bool* data_b, int bits_per_word)
 /* FUNCTION: unpack_to_bits                                       */
 /*----------------------------------------------------------------*/
 /* Description: Unpack the word into n bits.
- 
+
  Arguments: 1. Word to unpack
             2. Pointer to bit stream
             3. n (Number of bits per word
- 
+
  Returns:   None
- 
+
  ------------------------------------------------------------------*/
-void unpack_to_bits (uint packed_word, bool* data_b, int bits_per_word)
+void unpack_to_bits (uint* packed_word, bool* data_b, int bits_per_word)
 {
     uint i;
-    printf ("Unpacking 0x%X:\n", packed_word);
     for (i = 0; i < bits_per_word; i++)
     {
         /* MSB is mapped to the first bit out data_b[0] */
-        *(data_b + i) = (packed_word >> (bits_per_word - i)) & 0x01;
-        printf ("%d at %d\n", *(data_b + i), (bits_per_word - i));
+        *(data_b + i) = (*packed_word >> (bits_per_word - i - 1)) & 0x01;
         
     }
-    printf ("End\n");
+    return;
 } /* unpack_to_bits */

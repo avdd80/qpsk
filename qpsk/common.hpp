@@ -34,14 +34,14 @@ int log_2 (int x);
 /*----------------------------------------------------------------*/
 /* FUNCTION: pack_to_word                                         */
 /*----------------------------------------------------------------*/
-uint pack_to_word (bool* data_b, int bits_per_word);
+void pack_to_word (bool* data_b, uint* packed_word, int bits_per_word);
 
 
 
 /*----------------------------------------------------------------*/
 /* FUNCTION: unpack_to_bits                                       */
 /*----------------------------------------------------------------*/
-void unpack_to_bits (uint packed_word, bool* data_b, int bits_per_word);
+void unpack_to_bits (uint* packed_word, bool* data_b, int bits_per_word);
 
 
 #endif /* common_h */

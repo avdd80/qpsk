@@ -13,7 +13,7 @@
 #include "qpsk.hpp"
 
 /* Number of data bits in the data stream */
-#define NUMBER_OF_DATA_BITS              8
+#define NUMBER_OF_DATA_BITS              32
 
 /* Amplitude of transmitted signal */
 #define QPSK_MOD_AMPLITUDE               1
